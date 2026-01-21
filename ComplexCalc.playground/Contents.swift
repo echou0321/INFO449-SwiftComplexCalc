@@ -28,7 +28,71 @@ print("Welcome back to the UW Calculator")
 //: IMPORTANT: If any tests are commented out, you will be graded a zero (0)! You should never be in the habit of eliminating tests to make the code pass.
 //:
 class Calculator {
+
+    func add(lhs: Int, rhs: Int) -> Int {
+        lhs + rhs
+    }
+
+    func subtract(lhs: Int, rhs: Int) -> Int {
+        lhs - rhs
+    }
+
+    func multiply(lhs: Int, rhs: Int) -> Int {
+        lhs * rhs
+    }
+
+    func divide(lhs: Int, rhs: Int) -> Int {
+        lhs / rhs
+    }
+
+    func mathOp(lhs: Int, rhs: Int, op: (Int, Int) -> Int) -> Int {
+        op(lhs, rhs)
+    }
+
+    func add(_ values: [Int]) -> Int {
+        values.reduce(0, +)
+    }
+
+    func multiply(_ values: [Int]) -> Int {
+        values.reduce(1, *)
+    }
+
+    func count(_ values: [Int]) -> Int {
+        values.count
+    }
+
+    func avg(_ values: [Int]) -> Int {
+        guard !values.isEmpty else { return 0 }
+        return add(values) / count(values)
+    }
+
+    func mathOp(args: [Int], beg: Int, op: (Int, Int) -> Int) -> Int {
+        args.reduce(beg, op)
+    }
+
+    func add(lhs: (Int, Int), rhs: (Int, Int)) -> (Int, Int) {
+        (lhs.0 + rhs.0, lhs.1 + rhs.1)
+    }
+
+    func subtract(lhs: (Int, Int), rhs: (Int, Int)) -> (Int, Int) {
+        (lhs.0 - rhs.0, lhs.1 - rhs.1)
+    }
+
+    func add(lhs: [String: Int], rhs: [String: Int]) -> [String: Int] {
+        [
+            "x": (lhs["x"] ?? 0) + (rhs["x"] ?? 0),
+            "y": (lhs["y"] ?? 0) + (rhs["y"] ?? 0)
+        ]
+    }
+
+    func subtract(lhs: [String: Int], rhs: [String: Int]) -> [String: Int] {
+        [
+            "x": (lhs["x"] ?? 0) - (rhs["x"] ?? 0),
+            "y": (lhs["y"] ?? 0) - (rhs["y"] ?? 0)
+        ]
+    }
 }
+
 
 //: Don't change the name of this object (`calc`); it's used in all the tests.
 let calc = Calculator()
@@ -42,7 +106,24 @@ let calc = Calculator()
 //:
 //: Keep in mind that writing new tests may reveal ambiguity in the specification above--if that's the case, document the ambiguity, declare what you think *should* happen, and write the test to test for it.
 
-// ===== Your tests go here
+// Negative numbers
+calc.add(lhs: -3, rhs: -7) == -10
+calc.multiply(lhs: -4, rhs: 3) == -12
+
+// Empty array case
+calc.add([]) == 0
+calc.multiply([]) == 1
+calc.avg([]) == 0
+
+// One element arrays
+calc.avg([42]) == 42
+calc.count([42]) == 1
+
+// Higher-order operation with subtraction
+calc.mathOp(args: [10, 2, 3], beg: 20, op: { $0 - $1 }) == 5
+
+// Tuple with negatives
+calc.add(lhs: (-3, 4), rhs: (5, -6)) == (2, -2)
 
 //: ---
 //: ## Test code block
